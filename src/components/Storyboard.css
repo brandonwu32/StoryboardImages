@@ -1,0 +1,53 @@
+.storyboardBig{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    background-color: #28282B;
+}
+
+.storyboard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100vw;
+}
+
+.storyboardTitle {
+    margin-top: 5vh;
+}
+
+.progress {
+    position: absolute;
+    right: 10%;
+    color: white;
+    font-family: inter-med;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.progressButton {
+    height: 10pt;
+    margin-right: 5%;
+}
+
+.searchInput {
+    width: 50%;
+    margin-top: 5vh;
+    border-radius: 5px;
+    height: 5vh;
+    font-size: 12pt;
+}
+
+.enterButton {
+    width: 10%;
+    margin-top: 1vh;
+}
+.defaultImage {
+    width: 40%;
+    margin-top: 3vh;
+}
+.generatedImage {
+    width: 400px;
+    height: 300px;
+}

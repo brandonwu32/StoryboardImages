@@ -1,0 +1,21 @@
+.navBar {
+    display: flex;
+    flex-direction: row;
+    background-image: linear-gradient(to top right, rgba(22, 22, 111, 0.536), rgba(33, 33, 42, 0.114));;
+    padding-top: 2vh;
+    justify-content: center;
+    padding-bottom: 2vh;
+    width: 100%;
+}
+
+.menuButton {
+    margin-left: 2.5vw;
+    margin-right: 2.5vw;
+    text-decoration: none;
+    width: 9vw;
+}
+
+.buttonText {
+    color: white;
+    font-size: 12pt;
+}
