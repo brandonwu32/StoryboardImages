@@ -49,7 +49,7 @@ function Storyboard() {
 
                 const resultTwo = await openai.images.generate({
                     model: "dall-e-3",
-                    prompt: resultOne['choices'][0]['text'],
+                    prompt: "visualize this lyric using appropriate colors and high resolution" + resultOne['choices'][0]['text'],
                     n: 1,
                     size: "1024x1024",
                   });
@@ -90,7 +90,11 @@ function Storyboard() {
 
 
     function extractFive(lyrics) {
-        var splitLyrics = lyrics.split("]")
+        if (lyrics.includes("]")) {
+            var splitLyrics = lyrics.split("]")
+        } else {
+            var splitLyrics = lyrics.split(")");
+        }
         var length = Math.min(6, splitLyrics.length);
         var start = 1;
         if (length < 5) {
