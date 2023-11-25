@@ -1,6 +1,7 @@
 import "./Storyboard.css";
 import { useState, useEffect } from "react";
 import { getLyrics } from 'genius-lyrics-api';
+import ReactLoading from 'react-loading';
 const OpenAI = require("openai");
 
 
@@ -8,9 +9,9 @@ function Storyboard() {
     /* run this command in terminal
     open -na Google\ Chrome --args --user-data-dir=/tmp/temporary-chrome-profile-dir --disable-web-security
     */
-    const[progress, setProgress] = useState("Standby");
-    const[buttonColor, setButtonColor] = useState("red");
-    const[pageWidth, setPageWidth] = useState("100%");
+    const[progressValue, setProgressValue] = useState(3);
+    const[buttonColor, setButtonColor] = useState(1);
+    const[lyrics, setLyrics] = useState([]);
     const[readableLyrics, setReadableLyrics] = useState([]);
     const[queryOne, setQueryOne] = useState(null);
     const[queryTwo, setQueryTwo] = useState(null);
@@ -37,7 +38,7 @@ function Storyboard() {
     const handleParaphrase = async (e) => {
         setLoading(true);
         var urls = [];
-        setProgress("Communicating with models");
+        setProgressValue(2);
         for (let i = 0; i < songLength - 1; i++) {
             var songSection = fiveParts[i];
             try {
@@ -68,7 +69,6 @@ function Storyboard() {
     }, [paraphrasedParts])
 
     function setOptionValues(q1, q2) {
-        setProgress(`Fetching lyrics of ${queryTwo} by ${queryOne}`);
         setButtonColor("orange");
         const options = {
             apiKey: `${process.env.REACT_APP_GENIUS_DEV_KEY}`,
@@ -84,7 +84,6 @@ function Storyboard() {
 
     useEffect(() => {
         if (songLyrics !== null) {
-            setProgress("Processing Song Lyrics");
             console.log(songLyrics);
             extractFive(songLyrics);
         }
@@ -97,7 +96,7 @@ function Storyboard() {
         } else {
             var splitLyrics = lyrics.split(")");
         }
-        setReadableLyrics(lyrics.split("\n"));
+        setLyrics(lyrics.split("\n"));
         var length = Math.min(6, splitLyrics.length);
         var start = 1;
         if (length < 5) {
@@ -108,35 +107,44 @@ function Storyboard() {
     }
     useEffect(() => {
         if (fiveParts.length !== 0)
-            setProgress("Analyzing Lyrics");
             handleParaphrase();
     }, [fiveParts])
 
     useEffect(() => {
         if (imageURLs.length !== 0) {
-            setProgress("Displaying Generated Images");
             for (let i = 0; i < imageURLs.length; i++) {
                 console.log(imageURLs[i]);
             }
-            setPageWidth(`${2.5 * 100}%`);
             setButtonColor("rgb(0, 221, 0)");
+            setProgressValue(3);
+            setReadableLyrics(lyrics);
         }
         window.scrollTo(0, document.body.scrollHeight);
-        setProgress("Standby");
     }, [imageURLs])
+
+    function progress() {
+        if (progressValue === 2) {
+            return (
+                <ReactLoading type = "spin" color="#0000FF" height={100} width={50}></ReactLoading>
+            );
+        } else if (progressValue === 1) {
+            return null;
+        } else if (progressValue === 3) {
+            return null;
+        }
+    }
 
     return (
         <div className = "storyboardBig">
             <div className = "storyboard">
                 <h1 className = "storyboardTitle">Bring Your Music to Life</h1>
-                <div className = "progress">
-                    <button className = "progressButton" style = {{backgroundColor: buttonColor}}></button>
-                    <h3 className = "progressText">{progress}</h3>
-                </div>
                 <input className = "searchInput" id="searchInput" placeholder = "Artist Name" type = "text" onChange = {(e) => setQueryOne(e.target.value)}/>
                 <input className = "searchInput" id="searchInput" placeholder = "Song Name" type = "text" onChange = {(e) => setQueryTwo(e.target.value)}/>
                 <button className = "enterButton" onClick = {() => setOptionValues(queryOne, queryTwo)}><p className = "buttonText">Generate Image</p></button>
                 <img className = "defaultImage" src = {new URL(imageURL)} alt = "hello"></img>
+                <div className = "progress">
+                    {progress()}
+                </div>
             </div>
             <div className = "results">
                 <div className = "lyrics">

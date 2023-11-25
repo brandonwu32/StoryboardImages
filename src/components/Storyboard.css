@@ -13,22 +13,12 @@
 }
 
 .storyboardTitle {
-    margin-top: 2vh;
+    margin-top: 4vh;
 }
 
 .progress {
-    position: absolute;
-    right: 10%;
-    color: white;
-    font-family: inter-med;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-}
-
-.progressButton {
-    height: 10pt;
-    margin-right: 5%;
+    margin-top: -3%;
+    margin-left: 35%;
 }
 
 .searchInput {
@@ -44,7 +34,7 @@
     margin-top: 1vh;
 }
 .defaultImage {
-    width: 40%;
+    width: 30%;
     margin-top: 3vh;
     border-radius: 10px;
     box-shadow: 0 0 5px #ffffff;
@@ -79,4 +69,27 @@
     margin-top: 10vh;
     border-radius: 10px;
     box-shadow: 0 0 5px #ffffff;
+}
+
+.arrow {
+  text-align: center;
+  margin: 8% 0;
+}
+.bounce {
+  -moz-animation: bounce 2s infinite;
+  -webkit-animation: bounce 2s infinite;
+  animation: bounce 2s infinite;
+  background-color: white;
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-30px);
+  }
+  60% {
+    transform: translateY(-15px);
+  }
 }
