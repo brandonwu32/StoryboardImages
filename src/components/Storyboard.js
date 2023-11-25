@@ -11,6 +11,7 @@ function Storyboard() {
     const[progress, setProgress] = useState("Standby");
     const[buttonColor, setButtonColor] = useState("red");
     const[pageWidth, setPageWidth] = useState("100%");
+    const[readableLyrics, setReadableLyrics] = useState([]);
     const[queryOne, setQueryOne] = useState(null);
     const[queryTwo, setQueryTwo] = useState(null);
     const[songName, setSongName] = useState(null);
@@ -73,7 +74,8 @@ function Storyboard() {
             apiKey: `${process.env.REACT_APP_GENIUS_DEV_KEY}`,
             title: q2,
             artist: q1,
-            optimizeQuery: true
+            optimizeQuery: true,
+            "Access-Control-Allow-Origin": "*",
         };
         getLyrics(options).then((lyrics) => setSongLyrics(lyrics));
         setArtistName(queryOne);
@@ -95,6 +97,7 @@ function Storyboard() {
         } else {
             var splitLyrics = lyrics.split(")");
         }
+        setReadableLyrics(lyrics.split("\n"));
         var length = Math.min(6, splitLyrics.length);
         var start = 1;
         if (length < 5) {
@@ -116,13 +119,14 @@ function Storyboard() {
                 console.log(imageURLs[i]);
             }
             setPageWidth(`${2.5 * 100}%`);
-            setButtonColor("green");
+            setButtonColor("rgb(0, 221, 0)");
         }
+        window.scrollTo(0, document.body.scrollHeight);
         setProgress("Standby");
     }, [imageURLs])
 
     return (
-        <div className = "storyboardBig" style = {{width: pageWidth}}>
+        <div className = "storyboardBig">
             <div className = "storyboard">
                 <h1 className = "storyboardTitle">Bring Your Music to Life</h1>
                 <div className = "progress">
@@ -134,9 +138,19 @@ function Storyboard() {
                 <button className = "enterButton" onClick = {() => setOptionValues(queryOne, queryTwo)}><p className = "buttonText">Generate Image</p></button>
                 <img className = "defaultImage" src = {new URL(imageURL)} alt = "hello"></img>
             </div>
-            {imageURLs.map(url => (
-                <img className = "generatedImage" src = {url} alt = "none"></img>
-            ))}
+            <div className = "results">
+                <div className = "lyrics">
+                    {readableLyrics.map(line => (
+                        <p className = "line">{line}</p>
+                    ))}
+                </div>
+                <div className = "images">
+                    {imageURLs.map(url => (
+                        <img className = "generatedImage" src = {url} alt = "none"></img>
+                    ))}
+                </div>
+            </div>
+
         </div>
     );
 }

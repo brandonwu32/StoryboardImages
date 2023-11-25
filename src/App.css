@@ -45,8 +45,11 @@ h1 {
 }
 
 button {
-  background-color:  rgba(99, 40, 171, 0.536);
+  background-color: rgba(0, 0, 0, 0.536);
   border-radius: 10px;
+  border: none;
+  align-items: center;
+  justify-content: center;
 }
 
 p {
